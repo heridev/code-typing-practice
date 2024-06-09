@@ -1,32 +1,19 @@
-// backend/server.js
 const express = require('express');
-const cors = require('cors');
-const { Pool } = require('pg');
 const mongoose = require('mongoose');
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+const port = 3000;
 
-// PostgreSQL setup
-const pool = new Pool({
-  user: 'yourusername',
-  host: 'localhost',
-  database: 'yourdatabase',
-  password: 'yourpassword',
-  port: 5432,
-});
+// Connect to MongoDB
+mongoose.connect('mongodb://mongo:27017/test', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
-// MongoDB setup
-mongoose.connect('mongodb://localhost:27017/yourdatabase', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-// Example endpoint
+// Define a simple route
 app.get('/', (req, res) => {
-  res.send('Hello, world!');
+  res.send('Hello World!');
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
